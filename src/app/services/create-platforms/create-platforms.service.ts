@@ -28,7 +28,18 @@ export class CreatePlatformsService {
       let newPlatform  = new PlatformComponent(newPlatformBottom, gameWidth, grid)
       this.platformsArray.push(newPlatform)
     }
-
-    
+    return this.platformsArray[0]
   }
+
+  movePlatforms(doodlerFromBottom: string){
+    let doodlerFromBottomRawNumber = Number(doodlerFromBottom.slice(0,-2))
+    if(doodlerFromBottomRawNumber > 200)
+        this.platformsArray.forEach(platform=>{
+          platform.platformFromBottom -= 4
+          let visual = platform.platformVisual
+          visual.style.bottom = `${platform.platformFromBottom}px`
+          doodlerFromBottom = visual.style.bottom
+        })
+  }   
+  
 }

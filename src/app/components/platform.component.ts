@@ -1,8 +1,8 @@
 export class PlatformComponent {
 
-  private platformFromBottom: number;
-  private platformFromLeft: number;
-  private platformVisual: HTMLDivElement;
+  public platformFromBottom: number;
+  public platformFromLeft: number;
+  public platformVisual: HTMLDivElement;
 
   constructor(
     public newPlatformBottom: number,
