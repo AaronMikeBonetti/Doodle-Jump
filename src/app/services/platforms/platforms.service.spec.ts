@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CreatePlatformsService } from './create-platforms.service';
+import { CreatePlatformsService } from './platforms.service';
 
 describe('CreatePlatformsService', () => {
   let service: CreatePlatformsService;

@@ -1,0 +1,8 @@
+<div class="container__grid">
+    <ng-container *ngIf="isGameOver && isFirstGame">
+        <button (click)="resetGame()">Start Game</button>
+    </ng-container>
+    <ng-container *ngIf="isGameOver && !isFirstGame">
+        <button (click)="resetGame()">Reset Game</button>
+    </ng-container>
+</div>

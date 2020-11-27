@@ -1,34 +1,31 @@
-import { PlatformComponent } from './../../components/platform.component';
+import { PlatformComponent } from '../../components/platform.component';
 import { Injectable } from '@angular/core';
-
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class CreatePlatformsService {
+export class PlatformsService {
 
   private platformsArray: Array<PlatformComponent>
 
-  constructor(
-    
-  ) {
+  constructor() {
     this.platformsArray = []
-   }
+  }
 
-  createPlatforms(
+  createPlatforms( 
     platformCount: number, 
     gameHeight: number, 
     gameWidth: number, 
-    grid:Element  )  {
+    grid:Element )  {
 
-    for( let i=0; i < platformCount; i++) {
+    for(let i=0; i < platformCount; i++) {
       let platformGap = gameHeight / platformCount
       let newPlatformBottom = 100 + (i * platformGap)
       let newPlatform  = new PlatformComponent(newPlatformBottom, gameWidth, grid)
       this.platformsArray.push(newPlatform)
     }
-    return this.platformsArray[0]
+    return this.platformsArray
   }
 
   movePlatforms(doodlerFromBottom: string){
@@ -41,5 +38,4 @@ export class CreatePlatformsService {
           doodlerFromBottom = visual.style.bottom
         })
   }   
-  
 }

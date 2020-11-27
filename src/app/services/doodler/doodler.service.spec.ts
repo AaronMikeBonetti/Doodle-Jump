@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DoodlerCreatorService } from './doodler-creator.service';
+import { DoodlerCreatorService } from './doodler.service';
 
 describe('DoodlerCreatorService', () => {
   let service: DoodlerCreatorService;
