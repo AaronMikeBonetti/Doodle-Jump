@@ -1,12 +1,15 @@
+import { DoodlerService } from './../../services/doodler/doodler.service';
 import { PlatformComponent } from '../platform.component';
-import { Component, OnInit } from '@angular/core';
-import { DoodlerService } from '../../services/doodler/doodler.service';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { PlatformsService } from '../../services/platforms/platforms.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
+  host: {
+    '(document:keyup)': 'control($event)'
+  }
 })
 export class GameComponent implements OnInit {
 
@@ -26,9 +29,8 @@ export class GameComponent implements OnInit {
     private doodlerService: DoodlerService,
     private platformService: PlatformsService,
     ) { }
-
   ngOnInit():void{
-    document.addEventListener('keyup', this.moveLeft);
+    
     this.isGameOver = this.doodlerService.getGameOverStatus().subscribe(value=>{
       this.isGameOver = value;
     })
@@ -49,7 +51,6 @@ export class GameComponent implements OnInit {
   startGame():void{
     this.isFirstGame = false;
     setInterval(()=>this.platformService.movePlatforms(this.doodler.style.bottom), 30);
-    this.doodlerService.jump(this.doodler.style.bottom, this.doodler);
   }
 
   resetGame():void{
@@ -57,29 +58,31 @@ export class GameComponent implements OnInit {
     this.startGame();
   }
 
-  moveLeft(){
-    this.isGoingLeft = true
-    this.isGoingRight = false
-    this.doodlerService.doodlerMovingLeft(this.doodler)
+  moveLeft():void{
+    this.doodlerService.moveLeft(this.doodler, this.gameWidth)
   }
 
-  moveRight(){
-    this.isGoingLeft = false
-    this.isGoingRight = true
-    this.doodlerService.doodlerMovingRight(this.doodler)
+  moveRight():void{
+    this.doodlerService.moveRight(this.doodler, this.gameWidth)
+  }
+
+  stop():void{
+    this.doodlerService.stop(this.doodler)
   }
 
   control(e):void{
-    console.log('hi')
-    switch(e.key){
+    switch(e.code){
       case "ArrowLeft": 
         this.moveLeft()
       break
       case "ArrowRight": 
         this.moveRight()
       break
-      case "Space":
-        this.doodlerService.jump(this.doodler.style.bottom, this.doodler)
+      case "ArrowUp":  
+        this.stop()
+      break
+      case "Space": 
+        this.doodlerService.jump(this.doodler.style.bottom, this.doodler);
       break
     }
   }

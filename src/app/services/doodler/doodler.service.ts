@@ -1,19 +1,18 @@
 import { PlatformComponent } from './../../components/platform.component';
 import { EventEmitter, Injectable } from '@angular/core';
-
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class DoodlerService {
 
+  isGameOver: EventEmitter<boolean> = new EventEmitter();
+
   upTimerId: any;
   downTimerId: any;
-  leftTimeId:any;
-  rightTimeId:any;
+  leftTimerId:any;
+  rightTimerId:any;
 
-  isGameOver: EventEmitter<boolean> = new EventEmitter();
   gameOver: boolean
   isFirstJump: boolean;
   isJumping: boolean;
@@ -23,6 +22,8 @@ export class DoodlerService {
   doodlerFromBottomRawNumber: number;
   doodlerFromLeftRawNumber: number;
   doodlerFromRightRawNumber: number;
+  isMovingRight: boolean;
+  isMovingLeft: boolean;
 
   constructor() {
     this.doodlerStartPoint = 150
@@ -34,7 +35,8 @@ export class DoodlerService {
     doodlerClassName: string,
     platformsArray: PlatformComponent[]
     ): void{
-    this.isGameOver.emit(false)
+    this.isGameOver.emit(false);
+    this.gameOver = false
     this.platformsArray = platformsArray
     const doodler = document.createElement('div');
     const grid = document.querySelector(`.${gridClassName}`)
@@ -49,14 +51,13 @@ export class DoodlerService {
     clearInterval(this.downTimerId)
     this.upTimerId = setInterval(()=>{
       let doodlerFromBottomRawNumber = Number(doodlerFromBottom.slice(0,-2))
-      doodlerFromBottomRawNumber += 10
-      doodler.style.bottom = `${doodlerFromBottomRawNumber}px`
-      doodlerFromBottom = doodler.style.bottom
       if(doodlerFromBottomRawNumber > this.doodlerStartPoint + 500){
         this.fall(doodlerFromBottom, doodler)
       }
-      
-    }, 30)
+      doodlerFromBottomRawNumber += 1
+      doodler.style.bottom = `${doodlerFromBottomRawNumber}px`
+      doodlerFromBottom = doodler.style.bottom
+    }, 10)
   }
 
   fall(doodlerFromBottom: string, doodler: HTMLElement){
@@ -91,24 +92,52 @@ export class DoodlerService {
     }, 30)
   }
 
-  doodlerMovingLeft(doodler: HTMLElement){
-    clearInterval(this.rightTimeId)
-    this.leftTimeId = setInterval(()=>{
-      this.doodlerFromLeftRawNumber -=5
-      doodler.style.left = `${this.doodlerFromLeftRawNumber}px`
-    }, 30)
+  moveLeft(doodler: HTMLElement, gameWidth: number){
+    clearInterval(this.rightTimerId)
+    if(!this.isMovingLeft && !this.gameOver){
+      this.isMovingRight = false
+      this.isMovingLeft = true
+      this.leftTimerId = setInterval(()=>{
+        if(this.doodlerFromLeftRawNumber <= 0 ){
+          this.moveRight(doodler, gameWidth)
+        }
+        this.doodlerFromLeftRawNumber -=5
+        doodler.style.left = `${this.doodlerFromLeftRawNumber}px`
+      }, 20)
+      
+      
+    }
   }
-  doodlerMovingRight(doodler: HTMLElement){
-    clearInterval(this.leftTimeId)
-    this.leftTimeId = setInterval(()=>{
-      this.doodlerFromLeftRawNumber -=5
-      doodler.style.left = `${this.doodlerFromLeftRawNumber}px`
-    }, 30)
+
+  moveRight(doodler: HTMLElement, gameWidth: number){
+    clearInterval(this.leftTimerId)
+    if(!this.isMovingRight && !this.gameOver){
+      this.isMovingRight = true
+      this.isMovingLeft = false
+      this.rightTimerId = setInterval(()=>{
+        if(this.doodlerFromRightRawNumber >= gameWidth ){
+          this.moveLeft(doodler, gameWidth)
+        }
+        this.doodlerFromLeftRawNumber +=5
+        doodler.style.left = `${this.doodlerFromLeftRawNumber}px`
+        console.log(this.doodlerFromRightRawNumber, gameWidth)
+      }, 20)
+    }
+  }
+
+  stop(doodler: HTMLElement){
+    clearInterval(this.leftTimerId)
+    clearInterval(this.rightTimerId)
+    this.isMovingRight = false
+    this.isMovingLeft = false
   }
 
   gameOverFunc(){
     clearInterval(this.downTimerId)
     clearInterval(this.upTimerId)
+    clearInterval(this.leftTimerId)
+    clearInterval(this.rightTimerId)
+    this.gameOver = true
     this.isGameOver.emit(true)
   }
 
