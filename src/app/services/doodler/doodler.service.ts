@@ -17,15 +17,18 @@ export class DoodlerService {
   doodlerStartPoint: number;
   doodlerBottomSpace: number;
   doodlerFromBottomRawNumber: number;
+  doodlerFromTopRawNumber: number;
   doodlerFromLeftRawNumber: number;
   doodlerFromRightRawNumber: number;
   isMovingRight: boolean;
   isMovingLeft: boolean;
   grid: any;
+  gameCeiling: number;
 
   constructor() {
     this.doodlerStartPoint = 150;
     this.doodlerBottomSpace = this.doodlerStartPoint;
+    this.gameCeiling = window.innerHeight - 300;
   }
 
   createDoodler(
@@ -52,6 +55,9 @@ export class DoodlerService {
       if (doodlerFromBottomRawNumber > this.doodlerStartPoint + 500) {
         this.fall(doodlerFromBottom, doodler);
       }
+      if ( this.gameCeiling < doodlerFromBottomRawNumber  ){
+        this.fall(doodlerFromBottom, doodler);
+      }
       doodlerFromBottomRawNumber += 10;
       doodler.style.bottom = `${doodlerFromBottomRawNumber}px`;
       doodlerFromBottom = doodler.style.bottom;
@@ -64,8 +70,7 @@ export class DoodlerService {
     this.downTimerId = setInterval(() => {
       this.doodlerFromBottomRawNumber = Number(doodlerFromBottom.slice(0, -2));
       this.doodlerFromLeftRawNumber = Number(doodler.style.left.slice(0, -2));
-      this.doodlerFromRightRawNumber =
-        Number(doodler.style.left.slice(0, -2)) + 60;
+      this.doodlerFromRightRawNumber = Number(doodler.style.left.slice(0, -2)) + 60;
       this.doodlerFromBottomRawNumber -= 8;
       doodler.style.bottom = `${this.doodlerFromBottomRawNumber}px`;
       doodlerFromBottom = doodler.style.bottom;
@@ -73,8 +78,7 @@ export class DoodlerService {
         this.gameOverFunc();
       }
       this.platformsArray.forEach((platform) => {
-        const topOfPlatform =
-          platform.platformVisual.clientHeight + platform.platformFromBottom;
+        const topOfPlatform = platform.platformVisual.clientHeight + platform.platformFromBottom;
         const bottomOfPlatform = platform.platformFromBottom;
         const leftOfPlatform = platform.platformFromLeft;
         const rightOfPlatform =
