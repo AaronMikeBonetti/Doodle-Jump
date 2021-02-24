@@ -1,41 +1,62 @@
-import { PlatformComponent } from '../../components/platform.component';
+import { PlatformComponent } from './../../components/platform.component';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 export class PlatformsService {
+  private platformsArray: PlatformComponent[];
+  private gameHeight: number;
+  private gameWidth: number;
+  private grid: Element;
 
-  private platformsArray: Array<PlatformComponent>
+  constructor() {}
 
-  constructor() {
-    this.platformsArray = []
-  }
+  createPlatforms(
+    platformCount: number,
+    gameHeight: number,
+    gameWidth: number,
+    grid: Element
+  ): PlatformComponent[] {
+    this.platformsArray = [];
+    this.gameHeight = gameHeight;
+    this.gameWidth = gameWidth;
+    this.grid = grid;
 
-  createPlatforms( 
-    platformCount: number, 
-    gameHeight: number, 
-    gameWidth: number, 
-    grid:Element )  {
-
-    for(let i=0; i < platformCount; i++) {
-      let platformGap = gameHeight / platformCount
-      let newPlatformBottom = 100 + (i * platformGap)
-      let newPlatform  = new PlatformComponent(newPlatformBottom, gameWidth, grid)
-      this.platformsArray.push(newPlatform)
+    for (let i = 0; i < platformCount; i++) {
+      const platformGap = gameHeight / platformCount;
+      const newPlatformBottom = 100 + i * platformGap;
+      const newPlatform = new PlatformComponent(
+        newPlatformBottom,
+        gameWidth,
+        grid
+      );
+      this.platformsArray.push(newPlatform);
     }
-    return this.platformsArray
+    return this.platformsArray;
   }
 
-  movePlatforms(doodlerFromBottom: string){
-    let doodlerFromBottomRawNumber = Number(doodlerFromBottom.slice(0,-2))
-    if(doodlerFromBottomRawNumber > 200)
-        this.platformsArray.forEach(platform=>{
-          platform.platformFromBottom -= 4
-          let visual = platform.platformVisual
-          visual.style.bottom = `${platform.platformFromBottom}px`
-          doodlerFromBottom = visual.style.bottom
-        })
-  }   
+  movePlatforms(doodlerFromBottom: string): void {
+    const doodlerFromBottomRawNumber = Number(doodlerFromBottom.slice(0, -2));
+    if (doodlerFromBottomRawNumber > 200) {
+      this.platformsArray.forEach((platform) => {
+        platform.platformFromBottom -= 4;
+        const visual = platform.platformVisual;
+        visual.style.bottom = `${platform.platformFromBottom}px`;
+        doodlerFromBottom = visual.style.bottom;
+        if (platform.platformFromBottom < 0) {
+          const firstPlatform = this.platformsArray[0].platformVisual;
+          const newPlatform = new PlatformComponent(
+            this.gameHeight - 10,
+            this.gameWidth,
+            this.grid
+          );
+          firstPlatform.classList.remove('platform');
+          this.platformsArray.shift();
+          this.platformsArray.push(newPlatform);
+        }
+      });
+    }
+  }
 }
