@@ -25,6 +25,8 @@ export class GameComponent implements OnInit {
   public isFirstGame = true;
   public isFirstJump = true;
   public isGameOver: any;
+  currentGameScore: number;
+  currentGameInterval: any;
 
   constructor(
     private doodlerService: DoodlerService,
@@ -32,16 +34,36 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setGameOver();
     this.isGameOver = true;
-    this.doodlerService
-      .getGameOverStatus()
-      .subscribe((value) => {
-        this.isGameOver = value;
-      });
     this.gridElement = document.querySelector('.container__grid');
     this.gameHeight = this.gridElement.clientHeight;
     this.gameWidth = this.gridElement.clientWidth;
     this.platformCount = 5;
+  }
+
+  setGameOver(): void{
+    this.doodlerService
+      .getGameOverStatus()
+      .subscribe((value) => {
+        if ( value ){
+          clearInterval(this.currentGameInterval);
+        }
+        this.isGameOver = value;
+      });
+  }
+
+  setScore(): void{
+    this.currentGameScore = 0;
+    this.currentGameInterval = setInterval(() => {
+      this.currentGameScore += 100;
+    }, 80);
+  }
+
+  setFirstJump(): void{
+    this.setScore();
+    this.isFirstJump = false;
+    this.doodlerService.jump(this.doodler.style.bottom, this.doodler);
   }
 
   setGame(): void {
@@ -100,8 +122,7 @@ export class GameComponent implements OnInit {
         break;
       case 'ArrowUp':
         if (this.isFirstJump) {
-          this.isFirstJump = false;
-          this.doodlerService.jump(this.doodler.style.bottom, this.doodler);
+          this.setFirstJump();
         } else {
           this.stop();
         }

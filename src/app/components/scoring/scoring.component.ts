@@ -9,6 +9,7 @@ export class ScoringComponent implements OnInit {
 
   @Input() isFirstGame: boolean;
   @Input() isGameOver: boolean;
+  @Input() currentGameScore: number;
 
   @Output() resetGame = new EventEmitter<any>();
 
