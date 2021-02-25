@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-
 export class PlatformsService {
   private platformsArray: PlatformComponent[];
   private gameHeight: number;
@@ -47,14 +46,19 @@ export class PlatformsService {
         doodlerFromBottom = visual.style.bottom;
         if (platform.platformFromBottom < 0) {
           const firstPlatform = this.platformsArray[0].platformVisual;
+          firstPlatform.classList.remove('platform');
           const newPlatform = new PlatformComponent(
             this.gameHeight - 10,
             this.gameWidth,
             this.grid
           );
-          firstPlatform.classList.remove('platform');
           this.platformsArray.shift();
           this.platformsArray.push(newPlatform);
+          const images = document.getElementsByTagName('img');
+          const l = images.length - 5;
+          for (let i = 0; i < l; i++) {
+            images[0].parentNode.removeChild(images[0]);
+          }
         }
       });
     }

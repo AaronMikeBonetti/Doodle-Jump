@@ -10,13 +10,14 @@ export class PlatformComponent {
   ) {
     this.platformFromBottom = newPlatformBottom;
     this.platformFromLeft = Math.random() * (gameWidth - 85);
-    this.platformVisual = document.createElement('div');
+    this.platformVisual = document.createElement('img');
 
     const platformVisual = this.platformVisual;
 
-    platformVisual.classList.add('platform');
     platformVisual.style.left = `${this.platformFromLeft}px`;
     platformVisual.style.bottom = `${this.platformFromBottom}px`;
+    platformVisual.setAttribute('src', '../../assets/clouds/cloud_1.png');
+    platformVisual.classList.add('platform');
     grid.appendChild(platformVisual);
   }
 }
