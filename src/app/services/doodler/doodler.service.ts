@@ -39,9 +39,10 @@ export class DoodlerService {
     this.isGameOver.emit(false);
     this.gameOver = false;
     this.platformsArray = platformsArray;
-    const doodler = document.createElement('div');
+    const doodler = document.createElement('img');
+    doodler.setAttribute('src', `../../../assets/cats/cats_standing_1.png`);
     const grid = document.querySelector(`.${gridClassName}`);
-    doodler.classList.add(doodlerClassName);
+    doodler.setAttribute('id', doodlerClassName);
     grid.appendChild(doodler);
     doodler.style.left = `${platformsArray[0].platformFromLeft + 15}px`;
     doodler.style.bottom = `${platformsArray[0].platformFromBottom + 20}px`;
@@ -137,7 +138,7 @@ export class DoodlerService {
   }
 
   gameOverFunc(): void {
-    this.grid = document.querySelector('.container__grid');
+    this.grid = document.querySelector('.game__container');
     clearInterval(this.downTimerId);
     clearInterval(this.upTimerId);
     clearInterval(this.leftTimerId);

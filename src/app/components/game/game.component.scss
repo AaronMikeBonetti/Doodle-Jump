@@ -1,6 +1,6 @@
-.container__grid{
-    width: calc(100vw - 200px);
-    height: calc(100vh - 200px);
+.game__container{
+    width: 700px;
+    height: calc(100vh - 300px);
     margin: 100px auto;
     background: rgb(0, 234, 255);
     border: 2px solid black;
@@ -11,12 +11,13 @@
         height: auto;
         position: absolute;
         z-index: 2;
+        background: rgba(0, 234, 255, 0);
     }
 
-    ::ng-deep .doodler{
-        width: 60px;
-        height: 85px;
-        background: rgb(255, 0, 191);
+    ::ng-deep #doodler{
+        width: 160px;
+        height: 160px;
+        z-index: 1;
         position: absolute;
     }
 }

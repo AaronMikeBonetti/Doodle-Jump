@@ -19,6 +19,7 @@ export class PlatformComponent {
     platformVisual.style.bottom = `${this.platformFromBottom}px`;
     platformVisual.setAttribute('src', `../../assets/clouds/cloud_${cloudNum}.png`);
     platformVisual.classList.add('platform');
-    grid.appendChild(platformVisual);
+    const platformContainer = document.getElementsByClassName('platform__container')[0];
+    platformContainer.appendChild(platformVisual);
   }
 }

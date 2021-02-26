@@ -36,10 +36,10 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.setGameOver();
     this.isGameOver = true;
-    this.gridElement = document.querySelector('.container__grid');
+    this.gridElement = document.querySelector('.game__container');
     this.gameHeight = this.gridElement.clientHeight;
     this.gameWidth = this.gridElement.clientWidth;
-    this.platformCount = 5;
+    this.platformCount = 6;
   }
 
   setGameOver(): void{
@@ -74,11 +74,11 @@ export class GameComponent implements OnInit {
       this.gridElement
     );
     this.doodlerService.createDoodler(
-      'container__grid',
+      'game__container',
       'doodler',
       this.platformArray
     );
-    this.doodler = document.querySelector('.doodler');
+    this.doodler = document.querySelector('#doodler');
   }
 
   startGame(): void {
