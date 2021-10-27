@@ -1,7 +1,20 @@
+
+
+.game__header{
+    position: absolute;
+    top: 0;
+    margin: 0 25vw;
+    z-index: 1;
+    height: 6vh;
+    width: 50vw;
+    border-bottom: 2px solid black;
+    background: rgb(75, 75, 75);
+}
+
 .game__container{
-    width: 700px;
-    height: calc(100vh - 300px);
-    margin: 100px auto;
+    width: 50vw;
+    height: 90vh;
+    margin: 2.5vh auto;
     background: rgb(0, 234, 255);
     border: 2px solid black;
     position: relative;
@@ -10,15 +23,16 @@
         width: 100px;
         height: auto;
         position: absolute;
-        z-index: 2;
+        z-index: 0;
         background: rgba(0, 234, 255, 0);
     }
 
     ::ng-deep #doodler{
-        width: 160px;
-        height: 160px;
+        width: 70px;
+        height: 70px;
         z-index: 1;
         position: absolute;
     }
 }
+
 

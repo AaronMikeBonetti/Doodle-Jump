@@ -28,7 +28,8 @@ export class DoodlerService {
   constructor() {
     this.doodlerStartPoint = 150;
     this.doodlerBottomSpace = this.doodlerStartPoint;
-    this.gameCeiling = window.innerHeight - 300;
+
+    this.gameCeiling = document.body.clientHeight * 0.94;
   }
 
   createDoodler(
@@ -36,6 +37,7 @@ export class DoodlerService {
     doodlerClassName: string,
     platformsArray: PlatformComponent[]
   ): void {
+    this.gameCeiling = document.body.clientHeight * 0.89;
     this.isGameOver.emit(false);
     this.gameOver = false;
     this.platformsArray = platformsArray;

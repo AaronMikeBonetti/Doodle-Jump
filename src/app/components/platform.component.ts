@@ -14,11 +14,15 @@ export class PlatformComponent {
 
     const platformVisual = this.platformVisual;
     const cloudNum = Math.floor((Math.random() * 5) + 1);
-
+    if(cloudNum % 4 === 0){
+      platformVisual.setAttribute('src', `../../assets/cucumber/cucumber.jpg`);
+      platformVisual.classList.add('platform');
+    } else{
+      platformVisual.setAttribute('src', `../../assets/clouds/cloud_${cloudNum}.png`);
+      platformVisual.classList.add('platform');
+    }
     platformVisual.style.left = `${this.platformFromLeft}px`;
     platformVisual.style.bottom = `${this.platformFromBottom}px`;
-    platformVisual.setAttribute('src', `../../assets/clouds/cloud_${cloudNum}.png`);
-    platformVisual.classList.add('platform');
     const platformContainer = document.getElementsByClassName('platform__container')[0];
     platformContainer.appendChild(platformVisual);
   }

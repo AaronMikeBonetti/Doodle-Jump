@@ -39,7 +39,7 @@ export class GameComponent implements OnInit {
     this.gridElement = document.querySelector('.game__container');
     this.gameHeight = this.gridElement.clientHeight;
     this.gameWidth = this.gridElement.clientWidth;
-    this.platformCount = 6;
+    this.platformCount = 5;
   }
 
   setGameOver(): void{
@@ -94,6 +94,10 @@ export class GameComponent implements OnInit {
     this.isFirstGame = false;
     this.isGameOver = false;
     clearInterval(this.platformInterval);
+    const platformContainer = document.createElement('div');
+    platformContainer.classList.add('platform__container');
+    const gameContainer = document.getElementsByClassName('game__container')[0];
+    gameContainer.appendChild(platformContainer);
     this.startGame();
   }
 
